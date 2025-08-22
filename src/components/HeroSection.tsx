@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Leaf, Tractor, BarChart3, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const HeroSection = () => {
+  const navigate = useNavigate(); // Initialize navigate
+
   return (
     <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden">
       {/* Animated background elements */}
@@ -22,7 +25,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-6 text-center relative z-10">
         <div className="animate-slide-up">
           <h1 className="text-6xl md:text-8xl font-bold text-primary-foreground mb-6 leading-tight">
-            Agri<span className="text-gradient">Connect</span>
+            Kisaan<span className="text-gradient">Mitra</span>
           </h1>
           <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto leading-relaxed">
             Empowering farmers with a transparent marketplace, fair trade opportunities, 
@@ -31,14 +34,15 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button 
               size="lg" 
-              className="agriconnect-button bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 text-lg font-semibold animate-pulse-glow"
+              className="kisaanmitra-button bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 text-lg font-semibold animate-pulse-glow"
+              onClick={() => navigate("/login")} // Add onClick handler for navigation
             >
               🌾 Start Trading Now
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="agriconnect-button border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 px-8 py-4 text-lg font-semibold"
+              className="kisaanmitra-button border-primary-foreground text-primary hover:bg-primary-foreground/10 px-8 py-4 text-lg font-semibold"
             >
               📊 Learn More
             </Button>
@@ -52,7 +56,7 @@ const HeroSection = () => {
             <div className="text-primary-foreground/80">Active Farmers</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-primary-foreground">₹50Cr+</div>
+            <div className="text-4xl font-bo  ld text-primary-foreground">₹50Cr+</div>
             <div className="text-primary-foreground/80">Trade Volume</div>
           </div>
           <div className="text-center">

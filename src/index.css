@@ -43,7 +43,8 @@ All colors MUST be HSL.
     --earth-brown: 30 40% 60%;
     --sunshine-yellow: 45 100% 75%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    /* Updated gradient-primary for better contrast */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--sunshine-yellow)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--agricultural-green)), hsl(var(--primary-glow)));
     --gradient-card: linear-gradient(180deg, hsl(var(--background)), hsl(var(--agricultural-light)));
 
@@ -113,7 +114,8 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  .agriconnect-button {
+  /* Renamed agriconnect-button to kisaanmitra-button for consistency */
+  .kisaanmitra-button {
     @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium;
     @apply transition-all duration-300 ease-out;
     @apply hover:transform hover:scale-105 hover:-translate-y-1;
@@ -124,11 +126,11 @@ All colors MUST be HSL.
     transition: var(--transition-bounce);
   }
 
-  .agriconnect-button:hover {
+  .kisaanmitra-button:hover {
     box-shadow: var(--shadow-strong);
   }
 
-  .agriconnect-button:active {
+  .kisaanmitra-button:active {
     box-shadow: var(--shadow-soft);
   }
 

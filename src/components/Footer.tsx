@@ -39,7 +39,7 @@ const Footer = () => {
       <div className="border-b border-primary-foreground/20">
         <div className="container mx-auto px-6 py-12">
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4">Stay Updated with AgriConnect</h3>
+            <h3 className="text-3xl font-bold mb-4">Stay Updated with Kisaan Mitra</h3>
             <p className="text-primary-foreground/80 max-w-2xl mx-auto">
               Get the latest market insights, farming tips, and platform updates directly in your inbox.
             </p>
