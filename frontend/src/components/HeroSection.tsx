@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { Leaf, Tractor, BarChart3, Shield } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import AnimatedButton from "@/components/AnimatedButton";
 
 const HeroSection = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden">
@@ -32,38 +32,29 @@ const HeroSection = () => {
             and cutting-edge agricultural technology for sustainable farming.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button 
-              size="lg" 
-              className="kisaanmitra-button bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 text-lg font-semibold animate-pulse-glow"
-              onClick={() => navigate("/login")}
-            >
-              🌾 Login
-            </Button>
-            <Button 
-              size="lg" 
-              className="kisaanmitra-button bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-4 text-lg font-semibold"
-              onClick={() => navigate("/register")}
-            >
-              📝 Register
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="kisaanmitra-button border-primary-foreground text-primary hover:bg-primary-foreground/10 px-8 py-4 text-lg font-semibold"
+            <AnimatedButton
+              onClick={() => navigate("/learn-more")}
+              bgColor="bg-white"
+              textColor="text-primary"
+              hoverTextColor="hover:text-primary" // fixes disappearing text on hover
+              className="px-6 py-3"
             >
               📊 Learn More
-            </Button>
+            </AnimatedButton>
           </div>
         </div>
         
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-16 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <div
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-16 animate-slide-up"
+          style={{ animationDelay: '0.3s' }}
+        >
           <div className="text-center">
             <div className="text-4xl font-bold text-primary-foreground">10,000+</div>
             <div className="text-primary-foreground/80">Active Farmers</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bo  ld text-primary-foreground">₹50Cr+</div>
+            <div className="text-4xl font-bold text-primary-foreground">₹50Cr+</div>
             <div className="text-primary-foreground/80">Trade Volume</div>
           </div>
           <div className="text-center">
