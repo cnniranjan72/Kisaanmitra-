@@ -2,8 +2,8 @@ import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
-import { Link } from "react-router-dom"; // for navigation
-import AnimatedButton from "@/components/AnimatedButton"; // reusable button
+import { Link } from "react-router-dom";
+import AnimatedButton from "@/components/AnimatedButton";
 
 const Index = () => {
   return (
@@ -19,7 +19,7 @@ const Index = () => {
             <AnimatedButton
               bgColor="bg-white"
               textColor="text-primary"
-              hoverTextColor="hover:text-green-500" // login text turns green
+              hoverTextColor="hover:text-green-500"
               className="px-6 py-3"
             >
               Login
@@ -29,13 +29,13 @@ const Index = () => {
             <AnimatedButton
               bgColor="bg-primary"
               textColor="text-white"
-              hoverTextColor="hover:text-primary"
+              hoverTextColor="hover:text-white"
               className="px-6 py-3"
             >
               Register
             </AnimatedButton>
           </Link>
-          {/* Learn More removed from top-right */}
+          
         </div>
       </header>
 
