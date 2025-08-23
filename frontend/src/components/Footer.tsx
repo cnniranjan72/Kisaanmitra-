@@ -22,15 +22,15 @@ const Footer = () => {
   });
 
   const quickLinks = [
-    { name: "Crop Marketplace", href: "/market-intel" },
+    { name: "Crop Marketplace", href: "/marketplace" },
     { name: "Equipment Rentals", href: "/equipment-rentals" },
     { name: "Market Intelligence", href: "/market-intel" },
-    { name: "Financial Services", href: "/features/sustainability" }
+    { name: "Financial Services", href: "/sustainability" }
   ];
 
   const support = [
     { name: "Help Center", href: "/support/help" },
-    { name: "Community Forum", href: "/community-hub" },
+    { name: "Community Forum", href: "/community/discussions" },
     { name: "Contact Support", href: "/support/contact" },
     { name: "Documentation", href: "/support/docs" }
   ];

@@ -10,7 +10,7 @@ const CommunityHub = () => {
   const navItems = [
     {
       name: 'Discussion Forums',
-      path: '/community',
+      path: '/community/discussions',
       icon: <MessageSquare className="w-5 h-5" />,
     },
     {

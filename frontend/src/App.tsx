@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Footer from "@/components/Footer";
@@ -11,8 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SustainabilityPage from "./pages/SustainabilityPage";
 import EquipmentRentalsPage from "./pages/EquipmentRentalsPage";
-
-// Market Intelligence
+import Profile from "./pages/Profile";
 import MarketIntelligence from './pages/MarketIntelligence';
 import WeatherUpdates from './pages/MarketIntelligence/WeatherUpdates';
 import DiseaseAlerts from './pages/MarketIntelligence/DiseaseAlerts';
@@ -26,6 +26,7 @@ import ExpertConsultation from './pages/CommunityHub/ExpertConsultation';
 import VideoTutorials from './pages/CommunityHub/VideoTutorials';
 import LocalLanguageSupport from './pages/CommunityHub/LocalLanguageSupport';
 import VideoListPage from './pages/VideoListPage';
+import Marketplace from './pages/Marketplace';
 import VoiceAssistant from './components/VoiceAssistant'; // Add this line
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AuthProvider>
       <BrowserRouter>
         <div className="flex flex-col min-h-screen">
           <div className="flex-1">
@@ -66,8 +68,10 @@ const App = () => (
 
           {/* Other Pages */}
           <Route path="/sustainability" element={<SustainabilityPage />} />
-              <Route path="/equipment-rentals" element={<EquipmentRentalsPage />} />
-              <Route path="/videos" element={<VideoListPage />} />
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/equipment-rentals" element={<EquipmentRentalsPage />} />
+          <Route path="/videos" element={<VideoListPage />} />
+          <Route path="/profile" element={<Profile />} />
           
           {/* 404 Route - Keep this at the bottom */}
 
@@ -81,6 +85,7 @@ const App = () => (
           <VoiceAssistant />
         </div>
       </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
