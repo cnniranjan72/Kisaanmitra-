@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { 
   CloudRain, 
   AlertTriangle, 
@@ -13,29 +13,37 @@ const intelItems = [
     title: "Weather Updates",
     description: "Real-time weather data and forecasts for your farm location",
     icon: <CloudRain className="h-6 w-6" />,
-    link: "/market-intel/weather"
+    link: "weather"
   },
   {
     title: "Disease Alerts",
     description: "Early warnings about potential crop diseases in your area",
     icon: <AlertTriangle className="h-6 w-6" />,
-    link: "/market-intel/disease"
+    link: "disease"
   },
   {
     title: "Yield Predictions",
     description: "AI-powered yield forecasts based on various factors",
     icon: <Leaf className="h-6 w-6" />,
-    link: "/market-intel/yield"
+    link: "yield"
   },
   {
     title: "Price Forecasting",
     description: "Market price trends and future predictions",
     icon: <TrendingUp className="h-6 w-6" />,
-    link: "/market-intel/price"
+    link: "price"
   }
 ];
 
 export default function MarketIntelligence() {
+  // Get the current path to determine if we should show the dashboard
+  const location = useLocation();
+  const isDashboard = location.pathname === '/market-intel';
+  
+  if (!isDashboard) {
+    return <Outlet />;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -47,7 +55,7 @@ export default function MarketIntelligence() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {intelItems.map((item, index) => (
-          <Link to={item.link} key={index} className="hover:opacity-80 transition-opacity">
+          <Link to={`/market-intel/${item.link}`} key={index} className="hover:opacity-80 transition-opacity">
             <Card className="h-full hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
