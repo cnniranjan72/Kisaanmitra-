@@ -1,9 +1,9 @@
-// src/pages/MarketIntelligence/WeatherUpdates.tsx
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { CloudRain, Thermometer, Droplets, Wind } from 'lucide-react';
 
 export default function WeatherUpdates() {
-  // This would come from your weather API
+
   const weatherData = {
     temperature: 28,
     condition: "Sunny",

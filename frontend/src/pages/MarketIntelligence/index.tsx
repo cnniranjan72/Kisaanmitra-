@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { 
   CloudRain, 
@@ -12,30 +12,38 @@ const intelItems = [
   {
     title: "Weather Updates",
     description: "Real-time weather data and forecasts for your farm location",
-    icon: <CloudRain className="h-6 w-6 text-primary" />,
-    link: "/market-intel/weather"
+    icon: <CloudRain className="h-6 w-6" />,
+    link: "weather"
   },
   {
     title: "Disease Alerts",
     description: "Early warnings about potential crop diseases in your area",
-    icon: <AlertTriangle className="h-6 w-6 text-red-500" />,
-    link: "/market-intel/disease"
+    icon: <AlertTriangle className="h-6 w-6" />,
+    link: "disease"
   },
   {
     title: "Yield Predictions",
     description: "AI-powered yield forecasts based on various factors",
-    icon: <Leaf className="h-6 w-6 text-green-500" />,
-    link: "/market-intel/yield"
+    icon: <Leaf className="h-6 w-6" />,
+    link: "yield"
   },
   {
     title: "Price Forecasting",
     description: "Market price trends and future predictions",
-    icon: <TrendingUp className="h-6 w-6 text-yellow-500" />,
-    link: "/market-intel/price"
+    icon: <TrendingUp className="h-6 w-6" />,
+    link: "price"
   }
 ];
 
 export default function MarketIntelligence() {
+  // Get the current path to determine if we should show the dashboard
+  const location = useLocation();
+  const isDashboard = location.pathname === '/market-intel';
+  
+  if (!isDashboard) {
+    return <Outlet />;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -47,12 +55,8 @@ export default function MarketIntelligence() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {intelItems.map((item, index) => (
-          <Link 
-            to={item.link} 
-            key={index} 
-            className="transform transition-transform duration-300 hover:-translate-y-2 hover:scale-105"
-          >
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300 border border-transparent hover:border-primary">
+          <Link to={`/market-intel/${item.link}`} key={index} className="hover:opacity-80 transition-opacity">
+            <Card className="h-full hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
