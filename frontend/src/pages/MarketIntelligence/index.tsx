@@ -59,7 +59,7 @@ export default function MarketIntelligence() {
             <Card className="h-full hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-primary/10">
+                  <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                     {item.icon}
                   </div>
                   <div>
@@ -71,9 +71,9 @@ export default function MarketIntelligence() {
                 <p className="text-sm text-muted-foreground mb-4">
                   {item.description}
                 </p>
-                <div className="flex items-center text-primary text-sm font-medium">
+                <div className="flex items-center text-primary text-sm font-medium group-hover:text-primary-dark transition-colors">
                   <span>View details</span>
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </div>
               </CardContent>
             </Card>
