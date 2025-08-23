@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Wheat, Tractor, TrendingUp, CreditCard, Users, Leaf, Shield,
   ArrowRight, Zap, Target, Globe
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const FeaturesSection = () => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ const FeaturesSection = () => {
       description: "Direct farmer-to-buyer trading eliminating middlemen with transparent pricing and secure payments.",
       benefits: ["Real-time market rates", "AI price recommendations", "Secure digital payments", "Bulk trading options"],
       gradient: "from-agricultural to-agricultural-dark",
-      path: "/marketplace"
+      path: "/market-intel" // updated path to existing page
     },
     {
       icon: Tractor,
@@ -24,7 +23,7 @@ const FeaturesSection = () => {
       description: "Rent, buy, or sell farming equipment, seeds, and fertilizers at affordable rates.",
       benefits: ["Tractors & harvesters", "Drone technology", "Quality seeds & fertilizers", "Subscription models"],
       gradient: "from-earth to-agricultural",
-      path: "/equipment"
+      path: "/equipment-rentals"
     },
     {
       icon: TrendingUp,
@@ -40,7 +39,7 @@ const FeaturesSection = () => {
       description: "Easy access to micro-loans, insurance, and government schemes with digital wallet integration.",
       benefits: ["Micro-loans", "Crop insurance", "Government schemes", "Digital payments"],
       gradient: "from-sunshine to-agricultural",
-      path: "/financial"
+      path: "/financial" // create a placeholder page if not exists
     },
     {
       icon: Users,
@@ -48,7 +47,7 @@ const FeaturesSection = () => {
       description: "Connect with fellow farmers, share knowledge, and learn from agricultural experts.",
       benefits: ["Discussion forums", "Expert consultation", "Video tutorials", "Local language support"],
       gradient: "from-accent to-primary",
-      path: "/community"
+      path: "/community-hub"
     },
     {
       icon: Leaf,
@@ -56,7 +55,7 @@ const FeaturesSection = () => {
       description: "Promote eco-friendly farming with traceability and sustainability certifications.",
       benefits: ["Crop traceability", "Organic certification", "Sustainability badges", "Eco-friendly practices"],
       gradient: "from-agricultural-light to-agricultural",
-      path: "/sustainability"
+      path: "/features/sustainability"
     },
     {
       icon: Shield,
@@ -64,7 +63,7 @@ const FeaturesSection = () => {
       description: "Blockchain-powered transparency with ratings, reviews, and dispute resolution.",
       benefits: ["Blockchain records", "Rating system", "Secure transactions", "Dispute resolution"],
       gradient: "from-primary-glow to-primary",
-      path: "/security"
+      path: "/security" // create a placeholder page if not exists
     }
   ];
 
@@ -133,12 +132,16 @@ const FeaturesSection = () => {
               <span className="text-lg font-semibold text-foreground">Ready to Transform Agriculture?</span>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button className="agriconnect-button bg-primary text-primary-foreground hover:bg-primary/90 px-8">
-                <Globe className="w-5 h-5 mr-2" />
-                Join AgriConnect Today
+              <Button asChild className="agriconnect-button bg-primary text-primary-foreground hover:bg-primary/90 px-8">
+                <Link to="/register" className="flex items-center">
+                  <Globe className="w-5 h-5 mr-2" />
+                  Join AgriConnect Today
+                </Link>
               </Button>
-              <Button variant="outline" className="agriconnect-button border-primary text-primary hover:bg-primary/10">
-                Schedule Demo
+              <Button asChild variant="outline" className="agriconnect-button border-primary text-primary hover:bg-primary/10">
+                <Link to="/contact" className="flex items-center justify-center">
+                  Schedule Demo
+                </Link>
               </Button>
             </div>
           </div>

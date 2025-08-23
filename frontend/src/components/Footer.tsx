@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
   Wheat, 
@@ -8,33 +9,57 @@ import {
   Twitter, 
   Instagram, 
   Linkedin,
-  ArrowRight 
+  ArrowRight,
+  CheckCircle
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [popup, setPopup] = useState<{ message: string; show: boolean }>({
+    message: "",
+    show: false,
+  });
+
   const quickLinks = [
-    { name: "Crop Marketplace", href: "#marketplace" },
-    { name: "Equipment Rentals", href: "#equipment" },
-    { name: "Market Intelligence", href: "#intelligence" },
-    { name: "Financial Services", href: "#financial" }
+    { name: "Crop Marketplace", href: "/market-intel" },
+    { name: "Equipment Rentals", href: "/equipment-rentals" },
+    { name: "Market Intelligence", href: "/market-intel" },
+    { name: "Financial Services", href: "/features/sustainability" }
   ];
 
   const support = [
-    { name: "Help Center", href: "#help" },
-    { name: "Community Forum", href: "#community" },
-    { name: "Contact Support", href: "#contact" },
-    { name: "Documentation", href: "#docs" }
+    { name: "Help Center", href: "/support/help" },
+    { name: "Community Forum", href: "/community-hub" },
+    { name: "Contact Support", href: "/support/contact" },
+    { name: "Documentation", href: "/support/docs" }
   ];
 
   const company = [
-    { name: "About Us", href: "#about" },
-    { name: "Our Mission", href: "#mission" },
-    { name: "Careers", href: "#careers" },
-    { name: "Press Kit", href: "#press" }
+    { name: "About Us", href: "/about" },
+    { name: "Our Mission", href: "/mission" },
+    { name: "Careers", href: "/careers" },
+    { name: "Press Kit", href: "/press" }
   ];
 
+  const handleSubscribe = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      setPopup({ message: "Please enter a valid email address.", show: true });
+      setTimeout(() => setPopup({ message: "", show: false }), 3000);
+      return;
+    }
+
+    setPopup({
+      message: `Thank you for subscribing, ${email}! You'll stay updated with Kisaan Mitra.`,
+      show: true,
+    });
+    setEmail(""); // Clear input
+    setTimeout(() => setPopup({ message: "", show: false }), 4000);
+  };
+
   return (
-    <footer className="bg-gradient-to-b from-agricultural-dark to-primary text-primary-foreground">
+    <footer className="bg-gradient-to-b from-agricultural-dark to-primary text-primary-foreground relative">
       {/* Newsletter Section */}
       <div className="border-b border-primary-foreground/20">
         <div className="container mx-auto px-6 py-12">
@@ -44,15 +69,21 @@ const Footer = () => {
               Get the latest market insights, farming tips, and platform updates directly in your inbox.
             </p>
           </div>
+
+          {/* Input and Subscribe Button */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/30"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 px-4 py-3 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/30 transition"
             />
-            <Button className="agriconnect-button bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-6">
-              Subscribe
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button
+              onClick={handleSubscribe}
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-6 flex items-center gap-2"
+            >
+              Subscribe <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
@@ -75,12 +106,13 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
-                <button 
+                <a 
                   key={index}
+                  href="#"
                   className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-lg transition-colors"
                 >
                   <Icon className="w-5 h-5" />
-                </button>
+                </a>
               ))}
             </div>
           </div>
@@ -91,12 +123,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <a 
-                    href={link.href}
+                  <Link 
+                    to={link.href}
                     className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -108,12 +140,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {support.map((link, index) => (
                 <li key={index}>
-                  <a 
-                    href={link.href}
+                  <Link 
+                    to={link.href}
                     className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -148,19 +180,42 @@ const Footer = () => {
               © 2024 AgriConnect. All rights reserved. Empowering farmers across India.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#privacy" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
+              <Link to="/privacy" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#terms" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
+              </Link>
+              <Link to="/terms" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
                 Terms of Service
-              </a>
-              <a href="#cookies" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
+              </Link>
+              <Link to="/cookies" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Bottom Center Popup Notification */}
+      {popup.show && (
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-green-100 text-green-800 px-6 py-3 rounded-lg flex items-center gap-2 shadow-lg animate-fadeInOut z-50">
+          <CheckCircle className="w-5 h-5" />
+          <span>{popup.message}</span>
+        </div>
+      )}
+
+      {/* Fade animation */}
+      <style>
+        {`
+          @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(10px); }
+          }
+          .animate-fadeInOut {
+            animation: fadeInOut 4s ease-in-out forwards;
+          }
+        `}
+      </style>
     </footer>
   );
 };
