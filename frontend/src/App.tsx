@@ -7,6 +7,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MarketIntelligence from './pages/MarketIntelligence';
+import WeatherUpdates from './pages/MarketIntelligence/WeatherUpdates';
+import DiseaseAlerts from './pages/MarketIntelligence/DiseaseAlerts';
+import YieldPredictions from './pages/MarketIntelligence/YieldPredictions';
+import PriceForecasting from './pages/MarketIntelligence/PriceForecasting';
+import VoiceAssistant from './components/VoiceAssistant'; // Add this line
 
 const queryClient = new QueryClient();
 
@@ -20,9 +26,16 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/market-intel">
+            <Route index element={<MarketIntelligence />} />
+            <Route path="weather" element={<WeatherUpdates />} />
+            <Route path="disease" element={<DiseaseAlerts />} />
+            <Route path="yield" element={<YieldPredictions />} />
+            <Route path="price" element={<PriceForecasting />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <VoiceAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

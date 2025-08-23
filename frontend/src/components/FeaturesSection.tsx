@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 import { 
   Wheat, 
   Tractor, 
@@ -20,49 +21,56 @@ const FeaturesSection = () => {
       title: "🌾 Crop Marketplace",
       description: "Direct farmer-to-buyer trading eliminating middlemen with transparent pricing and secure payments.",
       benefits: ["Real-time market rates", "AI price recommendations", "Secure digital payments", "Bulk trading options"],
-      gradient: "from-agricultural to-agricultural-dark"
+      gradient: "from-agricultural to-agricultural-dark",
+      path: "/marketplace"
     },
     {
       icon: Tractor,
       title: "🚜 Equipment Rentals",
       description: "Rent, buy, or sell farming equipment, seeds, and fertilizers at affordable rates.",
       benefits: ["Tractors & harvesters", "Drone technology", "Quality seeds & fertilizers", "Subscription models"],
-      gradient: "from-earth to-agricultural"
+      gradient: "from-earth to-agricultural",
+      path: "/equipment"
     },
     {
       icon: TrendingUp,
       title: "📊 Market Intelligence",
       description: "Smart insights powered by AI for better decision making and profit maximization.",
       benefits: ["Weather updates", "Disease alerts", "Yield predictions", "Price forecasting"],
-      gradient: "from-primary to-primary-glow"
+      gradient: "from-primary to-primary-glow",
+      path: "/market-intel"
     },
     {
       icon: CreditCard,
       title: "💳 Financial Services",
       description: "Easy access to micro-loans, insurance, and government schemes with digital wallet integration.",
       benefits: ["Micro-loans", "Crop insurance", "Government schemes", "Digital payments"],
-      gradient: "from-sunshine to-agricultural"
+      gradient: "from-sunshine to-agricultural",
+      path: "/financial"
     },
     {
       icon: Users,
       title: "👨‍👩‍👧‍👦 Community Hub",
       description: "Connect with fellow farmers, share knowledge, and learn from agricultural experts.",
       benefits: ["Discussion forums", "Expert consultation", "Video tutorials", "Local language support"],
-      gradient: "from-accent to-primary"
+      gradient: "from-accent to-primary",
+      path: "/community"
     },
     {
       icon: Leaf,
       title: "🌍 Sustainability",
       description: "Promote eco-friendly farming with traceability and sustainability certifications.",
       benefits: ["Crop traceability", "Organic certification", "Sustainability badges", "Eco-friendly practices"],
-      gradient: "from-agricultural-light to-agricultural"
+      gradient: "from-agricultural-light to-agricultural",
+      path: "/sustainability"
     },
     {
       icon: Shield,
       title: "🔒 Security & Trust",
       description: "Blockchain-powered transparency with ratings, reviews, and dispute resolution.",
       benefits: ["Blockchain records", "Rating system", "Secure transactions", "Dispute resolution"],
-      gradient: "from-primary-glow to-primary"
+      gradient: "from-primary-glow to-primary",
+      path: "/security"
     }
   ];
 
@@ -112,9 +120,11 @@ const FeaturesSection = () => {
                   ))}
                 </div>
 
-                <Button className="agriconnect-button bg-primary text-primary-foreground hover:bg-primary/90 w-full group-hover:shadow-lg">
-                  <span>Explore Feature</span>
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <Button asChild className="agriconnect-button bg-primary text-primary-foreground hover:bg-primary/90 w-full group-hover:shadow-lg">
+                  <Link to={feature.path} className="flex items-center justify-center">
+                    <span>Explore Feature</span>
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </Button>
               </div>
             </div>
