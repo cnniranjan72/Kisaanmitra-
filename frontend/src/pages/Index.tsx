@@ -7,7 +7,7 @@ import AnimatedButton from "@/components/AnimatedButton";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col">
       {/* 🔹 Header/Navbar */}
       <header className="w-full bg-background shadow-md py-4 px-6 flex justify-between items-center fixed top-0 left-0 z-50">
         {/* Left side - Logo */}
@@ -35,12 +35,11 @@ const Index = () => {
               Register
             </AnimatedButton>
           </Link>
-          
         </div>
       </header>
 
       {/* 🔹 Page Content */}
-      <main className="pt-20">
+      <main className="mt-[64px]"> {/* Exact height of header (py-4 + content ~64px) */}
         <HeroSection />
         <FeaturesSection />
         <ProblemSection />

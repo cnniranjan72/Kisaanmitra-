@@ -38,7 +38,6 @@ const TechStackSection = () => {
       icon: Shield,
       color: "from-purple-500 to-purple-600", 
       technologies: [
-        { name: "Firebase Auth", description: "User authentication" },
         { name: "JWT", description: "Token-based security" },
         { name: "OAuth", description: "Social login integration" }
       ]

@@ -43,6 +43,7 @@ const Register = () => {
         onSubmit={handleSubmit}
         className="relative z-10 bg-white/90 p-8 rounded-xl shadow-lg w-full max-w-sm space-y-4"
       >
+        <p className="text-center text-green-800 font-medium text-lg">Hi Kisaan 👋!!</p>
         <h2 className="text-2xl font-bold mb-4 text-center text-green-900">Register</h2>
         {error && <div className="text-red-600 text-center">{error}</div>}
         {success && <div className="text-green-600 text-center">{success}</div>}

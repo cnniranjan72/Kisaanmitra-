@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { MessageSquare, Users, Video, Globe, ChevronRight } from 'lucide-react';
+import { MessageSquare, Users, Video, Globe } from 'lucide-react';
 import './styles.css';
 
 const CommunityHub = () => {
@@ -10,7 +10,7 @@ const CommunityHub = () => {
   const navItems = [
     {
       name: 'Discussion Forums',
-      path: '/community',
+      path: '/community/discussions', // ✅ Updated path
       icon: <MessageSquare className="w-5 h-5" />,
     },
     {

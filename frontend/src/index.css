@@ -114,7 +114,6 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Renamed agriconnect-button to kisaanmitra-button for consistency */
   .kisaanmitra-button {
     @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium;
     @apply transition-all duration-300 ease-out;

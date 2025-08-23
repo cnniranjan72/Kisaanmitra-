@@ -15,7 +15,7 @@ const FeaturesSection = () => {
       description: "Direct farmer-to-buyer trading eliminating middlemen with transparent pricing and secure payments.",
       benefits: ["Real-time market rates", "AI price recommendations", "Secure digital payments", "Bulk trading options"],
       gradient: "from-agricultural to-agricultural-dark",
-      path: "/market-intel" // updated path to existing page
+      path: "/market-intel"
     },
     {
       icon: Tractor,
@@ -39,7 +39,7 @@ const FeaturesSection = () => {
       description: "Easy access to micro-loans, insurance, and government schemes with digital wallet integration.",
       benefits: ["Micro-loans", "Crop insurance", "Government schemes", "Digital payments"],
       gradient: "from-sunshine to-agricultural",
-      path: "/financial" // create a placeholder page if not exists
+      path: "/financial"
     },
     {
       icon: Users,
@@ -47,7 +47,7 @@ const FeaturesSection = () => {
       description: "Connect with fellow farmers, share knowledge, and learn from agricultural experts.",
       benefits: ["Discussion forums", "Expert consultation", "Video tutorials", "Local language support"],
       gradient: "from-accent to-primary",
-      path: "/community-hub"
+      path: "/community" // ✅ Correct routing
     },
     {
       icon: Leaf,
@@ -55,7 +55,7 @@ const FeaturesSection = () => {
       description: "Promote eco-friendly farming with traceability and sustainability certifications.",
       benefits: ["Crop traceability", "Organic certification", "Sustainability badges", "Eco-friendly practices"],
       gradient: "from-agricultural-light to-agricultural",
-      path: "/features/sustainability"
+      path: "/sustainability"
     },
     {
       icon: Shield,
@@ -63,7 +63,7 @@ const FeaturesSection = () => {
       description: "Blockchain-powered transparency with ratings, reviews, and dispute resolution.",
       benefits: ["Blockchain records", "Rating system", "Secure transactions", "Dispute resolution"],
       gradient: "from-primary-glow to-primary",
-      path: "/security" // create a placeholder page if not exists
+      path: "/security"
     }
   ];
 

@@ -36,7 +36,6 @@ const intelItems = [
 ];
 
 export default function MarketIntelligence() {
-  // Get the current path to determine if we should show the dashboard
   const location = useLocation();
   const isDashboard = location.pathname === '/market-intel';
   
@@ -55,11 +54,18 @@ export default function MarketIntelligence() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {intelItems.map((item, index) => (
-          <Link to={`/market-intel/${item.link}`} key={index} className="hover:opacity-80 transition-opacity">
-            <Card className="h-full hover:shadow-lg transition-shadow">
-              <CardHeader>
+          <Link
+            to={`/market-intel/${item.link}`}
+            key={index}
+            className="group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+          >
+            <Card className="h-full relative overflow-hidden shadow-sm hover:shadow-2xl transition-shadow duration-500">
+              {/* Gradient overlay: light green to white */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-green-100 to-white opacity-70 group-hover:opacity-90 transition-opacity duration-500 pointer-events-none"></div>
+
+              <CardHeader className="relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                  <div className="p-2 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
                     {item.icon}
                   </div>
                   <div>
@@ -67,13 +73,13 @@ export default function MarketIntelligence() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="relative z-10">
                 <p className="text-sm text-muted-foreground mb-4">
                   {item.description}
                 </p>
-                <div className="flex items-center text-primary text-sm font-medium group-hover:text-primary-dark transition-colors">
+                <div className="flex items-center text-primary text-sm font-medium group-hover:text-primary-dark transition-colors duration-300">
                   <span>View details</span>
-                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </CardContent>
             </Card>
