@@ -1,20 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { 
-  Wheat, 
-  Tractor, 
-  TrendingUp, 
-  CreditCard, 
-  Users, 
-  Leaf, 
-  Shield,
-  ArrowRight,
-  Zap,
-  Target,
-  Globe
+  Wheat, Tractor, TrendingUp, CreditCard, Users, Leaf, Shield,
+  ArrowRight, Zap, Target, Globe
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const FeaturesSection = () => {
+  const navigate = useNavigate();
+
   const features = [
     {
       icon: Wheat,
