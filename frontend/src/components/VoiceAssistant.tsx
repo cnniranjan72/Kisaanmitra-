@@ -54,49 +54,74 @@ const VoiceAssistant = () => {
         
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = true;
-        recognition.lang = 'en-US';
         
+        // Optimize recognition settings
+        recognition.continuous = false;  // Process one command at a time
+        recognition.interimResults = false;  // Only process final results
+        recognition.lang = 'en-US';
+        // Note: maxAlternatives is not supported in the type definition but works in browsers
+        (recognition as any).maxAlternatives = 1;  // Only get the top alternative
+        
+        // Process results immediately when available
         recognition.onresult = (event) => {
-          const newTranscript = Array.from(event.results)
-            .map((result) => result[0]?.transcript || '')
-            .join('')
-            .trim();
+          const result = event.results[0][0];
+          const command = result.transcript.trim();
           
-          if (newTranscript) {
-            setTranscript(newTranscript);
+          if (command) {
+            setTranscript(command);
+            processCommandImmediately(command);
+            
+            // Reset the hide timer when new speech is detected
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+            timeoutRef.current = setTimeout(() => {
+              setTranscript('');
+            }, 3000);
+          }
+          
+          // Stop listening after processing one command
+          if (recognitionRef.current) {
+            recognitionRef.current.stop();
           }
         };
 
         recognition.onend = () => {
-          if (transcript) {
-            processCommand(transcript);
-          }
           setIsListening(false);
+          // Clear any pending timeouts
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+          }
         };
 
         recognition.onerror = (event) => {
-          if (event.error !== 'aborted') {
+          if (event.error !== 'aborted' && event.error !== 'no-speech') {
             toast({
               title: 'Error',
-              description: `Speech recognition error: ${event.error}`,
+              description: `Voice command error: ${event.error}`,
               variant: 'destructive',
             });
           }
           setIsListening(false);
         };
 
+        // Set up a single timeout when starting recognition
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        // Set a timeout to stop listening after 3 seconds of no speech
+        timeoutRef.current = setTimeout(() => {
+          if (recognitionRef.current && isListening) {
+            recognitionRef.current.stop();
+          }
+        }, 3000);
+
         recognitionRef.current = recognition;
         recognition.start();
         setIsListening(true);
         
-        // Auto-stop after 5 seconds of no speech
-        timeoutRef.current = setTimeout(() => {
-          if (isListening && recognitionRef.current) {
-            recognitionRef.current.stop();
-          }
-        }, 5000);
+        // Initial timeout is already set above
+        
         
       } catch (error) {
         console.error('Error accessing microphone:', error);
@@ -118,54 +143,207 @@ const VoiceAssistant = () => {
     }
   };
 
-  const processCommand = async (text: string) => {
-    const command = text.toLowerCase().trim();
-    console.log('Processing command:', command);
+  const showSuccessToast = (message: string) => {
+    // Use a more subtle toast for success messages
+    toast({
+      description: message,
+      duration: 1500, // Shorter duration for less intrusive feedback
+    });
+  };
+
+  const showErrorToast = (message: string) => {
+    // Use a more prominent toast for error messages
+    toast({
+      title: 'Error',
+      description: message,
+      variant: 'destructive',
+    });
+  };
+
+  // Auto-hide the transcript after a delay
+  useEffect(() => {
+    if (!transcript) return;
     
-    // Close commands list when processing a command
-    setShowCommands(false);
-
-    // Navigation commands
-    const navCommands: { [key: string]: string } = {
-      'go to home': '/',
-      'home': '/',
-      'dashboard': '/',
-      'marketplace': '/marketplace',
-      'equipment': '/equipment',
-      'financial': '/financial',
-      'community': '/community',
-      'market intelligence': '/market-intel',
-      'weather': '/market-intel/weather',
-      'disease alerts': '/market-intel/disease',
-      'yield predictions': '/market-intel/yield',
-      'price forecast': '/market-intel/price',
+    const hideTimer = setTimeout(() => {
+      setTranscript('');
+    }, 3000); // Hide after 3 seconds of no new speech
+    
+    return () => {
+      clearTimeout(hideTimer);
     };
+  }, [transcript]);
 
-    // Check for matches
-    for (const [key, path] of Object.entries(navCommands)) {
-      if (command.includes(key)) {
-        console.log(`Navigating to: ${path}`);
-        setIsNavigating(true);
-        
-        // Add a small delay to show the loading state
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
+  // Process commands immediately as they come in
+  const processCommandImmediately = (command: string) => {
+    const normalizedCommand = command.toLowerCase().trim();
+    
+    // Define command interface for better type safety
+    interface CommandHandler {
+      pattern: RegExp;
+      action: (match: RegExpMatchArray) => string | void;
+      isDynamic: boolean;
+    }
+    
+    // Predefined command patterns for quick matching
+    const commandMap: CommandHandler[] = [
+      // Navigation Commands
+      { 
+        pattern: /(go to|navigate to|open|show)\s*(?:the)?\s*(home|dashboard)/i, 
+        action: () => { 
+          navigate('/');
+          return 'Navigating to Home';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(go to|navigate to|open|show)\s*(?:the)?\s*(marketplace|shop|store)/i, 
+        action: () => {
+          navigate('/marketplace');
+          return 'Navigating to Marketplace';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(go to|navigate to|open|show)\s*(?:the)?\s*(community|forum|discussion)/i, 
+        action: () => {
+          navigate('/community');
+          return 'Navigating to Community Hub';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(go to|navigate to|open|show)\s*(?:the)?\s*(sustainability|sustainable|eco)/i, 
+        action: () => {
+          navigate('/sustainability');
+          return 'Navigating to Sustainability';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(go to|navigate to|open|show)\s*(?:my)?\s*(profile|account)/i, 
+        action: () => {
+          navigate('/profile');
+          return 'Navigating to Profile';
+        },
+        isDynamic: true
+      },
+      
+      // Search Commands
+      { 
+        pattern: /(search for|find|look for)\s+(.+)/i, 
+        action: (match: RegExpMatchArray) => {
+          const searchQuery = match[2].trim();
+          navigate(`/marketplace?search=${encodeURIComponent(searchQuery)}`);
+          return `Searching for ${searchQuery}`;
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(find|show|list)\s+(tractors?|equipment|machinery)/i, 
+        action: () => {
+          navigate('/marketplace?category=machinery');
+          return 'Showing tractors and equipment';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(find|show|list)\s+(seeds?|fertilizers?|pesticides?)/i, 
+        action: () => {
+          navigate('/marketplace?category=seeds');
+          return 'Showing seeds and fertilizers';
+        },
+        isDynamic: true
+      },
+      
+      // Weather Commands
+      { 
+        pattern: /(what'?s|what is|show me)\s+(the )?weather( forecast)?( for (today|tomorrow))?/i, 
+        action: () => {
+          // This would typically call a weather API
+          return 'The weather is partly cloudy with a high of 28°C. Good conditions for farming!';
+        },
+        isDynamic: true
+      },
+      
+      // Market Price Commands
+      { 
+        pattern: /(what'?s|what is|show me)\s+(the )?(current )?(market )?price( of| for)?\s*(.+)/i, 
+        action: (match: RegExpMatchArray) => {
+          const crop = match[5].trim();
+          // This would typically fetch current market prices
+          return `Current market price for ${crop} is approximately ₹${Math.floor(Math.random() * 2000) + 1000} per quintal.`;
+        },
+        isDynamic: true
+      },
+      
+      // Help Commands
+      { 
+        pattern: /(what can i say|help|commands?|options?)/i, 
+        action: () => {
+          setShowCommands(true);
+          return 'Showing available commands';
+        },
+        isDynamic: true
+      },
+      
+      // Social Features
+      { 
+        pattern: /(show|view|check)\s+(my )?(notifications?|alerts?)/i, 
+        action: () => {
+          // This would typically open notifications
+          return 'You have 3 new notifications';
+        },
+        isDynamic: true
+      },
+      { 
+        pattern: /(post|share)\s+(a )?(status|update)( saying)?(.*)/i, 
+        action: (match: RegExpMatchArray) => {
+          const status = match[4].trim();
+          if (status) {
+            return `Posted to community: "${status}"`;
+          }
+          return 'What would you like to share with the community?';
+        },
+        isDynamic: true
+      },
+      
+      // Farming Tips
+      { 
+        pattern: /(give me|show me|suggest)\s+(a )?(farming tip|agricultural advice)/i, 
+        action: () => {
+          const tips = [
+            'Consider rotating your crops to maintain soil health.',
+            'The best time to water plants is early morning or late evening.',
+            'Using organic compost can improve your soil quality significantly.',
+            'Monitor your crops regularly for early signs of pests or disease.'
+          ];
+          return tips[Math.floor(Math.random() * tips.length)];
+        },
+        isDynamic: true
+      }
+      
+    ];
+
+    // Find and execute the matching command
+    for (const cmd of commandMap) {
+      const match = normalizedCommand.match(cmd.pattern);
+      if (match) {
         try {
-          navigate(path);
-        } finally {
-          // Ensure we always clean up the loading state
-          setTimeout(() => setIsNavigating(false), 500);
+          const result = cmd.action(match);
+          if (result) {
+            showSuccessToast(result);
+          }
+          return; // Exit after first match
+        } catch (error) {
+          console.error('Error executing command:', error);
+          showErrorToast('Error executing command');
+          return;
         }
-        return;
       }
     }
 
-    // If no match found
-    toast({
-      title: 'Command not recognized',
-      description: 'Try saying "Go to marketplace" or "Show weather"',
-      variant: 'destructive',
-    });
+    // If no match found, show a helpful message
+    showErrorToast('Command not recognized. Try saying "Go to marketplace" or "Show weather"');
   };
 
   // Close commands list when clicking outside
@@ -177,30 +355,20 @@ const VoiceAssistant = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    // Add type assertion to handle the event listener type
+    document.addEventListener('mousedown', handleClickOutside as EventListener);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside as EventListener);
+    };
   }, [showCommands]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 voice-assistant-container">
+    <div className="fixed bottom-4 right-4 z-50">
       <div className="relative">
-        <button
-          onClick={() => setShowCommands(!showCommands)}
-          className="absolute -top-10 right-0 p-1 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
-        >
-          <Info className="h-4 w-4" />
-        </button>
-        
-        {showCommands && (
-          <div className="absolute bottom-full right-0 mb-2 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-lg w-64">
-            <h4 className="font-semibold mb-2">Available Commands:</h4>
-            <ul className="space-y-1 text-sm">
-              <li>• "Go to marketplace"</li>
-              <li>• "Show weather updates"</li>
-              <li>• "Show disease alerts"</li>
-              <li>• "Show yield predictions"</li>
-              <li>• "Show price forecast"</li>
-            </ul>
+        {/* Speech bubble that shows transcript */}
+        {transcript && (
+          <div className="absolute bottom-full right-0 mb-2 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-xs transition-opacity duration-300">
+            <p className="text-sm text-gray-800 dark:text-gray-200">{transcript}</p>
           </div>
         )}
         <Button
@@ -216,7 +384,6 @@ const VoiceAssistant = () => {
           aria-label={isListening ? 'Stop listening' : 'Start voice command'}
         >
           {isNavigating ? (
-            // Loading spinner
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
             </div>
@@ -227,19 +394,11 @@ const VoiceAssistant = () => {
           )}
         </Button>
         
-          {/* Visual indicator when listening */}
+        {/* Visual indicator when listening */}
         {isListening && (
           <div className="absolute -inset-1 rounded-full bg-red-500 opacity-75 animate-ping"></div>
         )}
       </div>
-      
-      {/* Transcript display */}
-      {transcript && (
-        <div className="mt-2 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-md text-sm max-w-xs">
-          <p className="font-medium text-gray-900 dark:text-white">You said:</p>
-          <p className="text-gray-700 dark:text-gray-300 mt-1">{transcript}</p>
-        </div>
-      )}
     </div>
   );
 };

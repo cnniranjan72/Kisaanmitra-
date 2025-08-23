@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Wheat, Tractor, TrendingUp, CreditCard, Users, Leaf, Shield,
   ArrowRight, Zap, Target, Globe
@@ -15,7 +16,7 @@ const FeaturesSection = () => {
       description: "Direct farmer-to-buyer trading eliminating middlemen with transparent pricing and secure payments.",
       benefits: ["Real-time market rates", "AI price recommendations", "Secure digital payments", "Bulk trading options"],
       gradient: "from-agricultural to-agricultural-dark",
-      path: "/market-intel"
+      path: "/marketplace" // Correct path for the marketplace page
     },
     {
       icon: Tractor,
@@ -39,7 +40,7 @@ const FeaturesSection = () => {
       description: "Easy access to micro-loans, insurance, and government schemes with digital wallet integration.",
       benefits: ["Micro-loans", "Crop insurance", "Government schemes", "Digital payments"],
       gradient: "from-sunshine to-agricultural",
-      path: "/financial"
+      path: "/sustainability"
     },
     {
       icon: Users,
@@ -63,7 +64,7 @@ const FeaturesSection = () => {
       description: "Blockchain-powered transparency with ratings, reviews, and dispute resolution.",
       benefits: ["Blockchain records", "Rating system", "Secure transactions", "Dispute resolution"],
       gradient: "from-primary-glow to-primary",
-      path: "/security"
+      path: "/security" // create a placeholder page if not exists
     }
   ];
 

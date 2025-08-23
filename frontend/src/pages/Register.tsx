@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { register } from "@/services/auth";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -9,24 +11,45 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setIsLoading(true);
+
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Registration failed");
-      setSuccess("Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 1500);
+      const data = await register(username, email, password);
+      if (data.token) {
+        // Auto-login after registration
+        const loginRes = await fetch(`${process.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        
+        if (loginRes.ok) {
+          const { token, user } = await loginRes.json();
+          if (token && user) {
+            localStorage.setItem("token", token);
+            setUser(user);
+            navigate("/");
+            return;
+          }
+        }
+        
+        // If auto-login fails, redirect to login
+        setSuccess("Registration successful! Please log in.");
+        setTimeout(() => navigate("/login"), 1500);
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Registration failed. Please try again.");
+      console.error("Registration error:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,8 +93,12 @@ const Register = () => {
           required
         />
 
-        <Button type="submit" className="w-full bg-green-700 hover:bg-green-800 text-white">
-          Register
+        <Button 
+          type="submit" 
+          className="w-full bg-green-700 hover:bg-green-800"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Creating account...' : 'Register'}
         </Button>
 
         <div className="text-center text-sm mt-2">
